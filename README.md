@@ -1,5 +1,5 @@
 ## Description:
-A system that informs whether vehicles are allowed to enter a parking lot by determining the vehicle's type, using public API OCR
+A system that informs whether vehicles are allowed to enter a parking lot by determining the vehicle's type, using the public API OCR to detect text from images
 
 ## Instructions:
 1. Make sure JDK and Maven are installed on your computer
