@@ -76,7 +76,6 @@ public class LicensePlateTest {
         assertThat(result).isEqualTo("Vehicle number 2952165 is allowed to enter the parking lot.");
     }
 
-
     @Test
     public void testGas() {
         ResponseEntity<String> response = restTemplate.exchange("http://localhost:" + port +
@@ -88,17 +87,17 @@ public class LicensePlateTest {
     }
 
     @Test
-    public void testMilitary() {
+    public void testInvalid() {
         ResponseEntity<String> response = restTemplate.exchange("http://localhost:" + port +
                         "/plates/check?image_url=https://i.ibb.co/gR9jkg6/cali.jpg",
                 HttpMethod.GET, null, new ParameterizedTypeReference<String>() {
                 });
         String result = response.getBody();
-        assertThat(result).isEqualTo("Military vehicle is NOT allowed to enter the parking lot.");
+        assertThat(result).isEqualTo("Invalid license plate - not a license plate or not an Israeli license plate. Please insert a valid Israeli license plate.");
     }
 
     @Test
-    public void testMilitary2() {
+    public void testMilitary() {
         ResponseEntity<String> response = restTemplate.exchange("http://localhost:" + port +
                         "/plates/check?image_url=https://i.ibb.co/Q8RPWBc/9.jpg",
                 HttpMethod.GET, null, new ParameterizedTypeReference<String>() {
@@ -106,8 +105,6 @@ public class LicensePlateTest {
         String result = response.getBody();
         assertThat(result).isEqualTo("Military vehicle is NOT allowed to enter the parking lot.");
     }
-
-
 
     @Test
     public void testSendPost() throws Exception{

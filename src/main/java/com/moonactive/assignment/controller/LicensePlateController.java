@@ -53,10 +53,19 @@ public class LicensePlateController {
             try {
                 response = postRequest(image_url);
                 JSONObject object = new JSONObject(response);
-                response = ((JSONObject)((JSONArray) object.get("ParsedResults")).get(0)).getString("ParsedText");
-                break;
+                if(object.has("ParsedResults") && object.getJSONArray("ParsedResults").length() > 0 ) {
+                    response = ((JSONObject)((JSONArray) object.get("ParsedResults")).get(0)).getString("ParsedText");
+                    break;
+                }
+                else if (object.has("IsErroredOnProcessing")
+                        && object.getBoolean("IsErroredOnProcessing"))
+                {
+                    response = null;
+                    throw new Exception();
+                }
             }
             catch (Exception e) {
+                response = null;
                 if (++count == maxTries)
                     break;
             }
@@ -64,10 +73,12 @@ public class LicensePlateController {
         if(response == null || response.isEmpty()) {
             return "OCR API failed 3 times due to timeouts.";
         }
-        if(response.length() < 7) {
+
+        String plateNumber = editPlateNumber(response);
+
+        if(plateNumber.length() < 7 || plateNumber.equals("No digits")) {
             return "Invalid license plate - not a license plate or not an Israeli license plate. Please insert a valid Israeli license plate.";
         }
-        String plateNumber = editPlateNumber(response);
         String plateType = determineType(plateNumber);
 
         Calendar calendar = Calendar.getInstance();
@@ -92,29 +103,39 @@ public class LicensePlateController {
 
     // Edits the string in order to retrieve the desired plate number
     public String editPlateNumber(String response){
-        String[] strArray = response.split("\n", 2);
-        response = strArray[0];
-
+        String[] strArrayForNewLine = response.split("\n", 2);
+        response = strArrayForNewLine[0];
+        String[] strArrayForTabs = response.split("\t", 2);
+        response = strArrayForTabs[0];
         String plateNumber = response.replaceAll("\\s+","");
         plateNumber = plateNumber.replaceAll(":", "");
         plateNumber = plateNumber.replaceAll("-", "");
         plateNumber = plateNumber.replaceAll("[^\\dA-Za-z ]", "");
-
-        if(response.startsWith("IL"))
+        if(!containsDigits(response)) {
+            return "No digits";
+        }
+        if(response.startsWith("IL")) {
             plateNumber = plateNumber.substring(2);
-
-        if (plateNumber.length() > 8)
+        }
+        if (plateNumber.length() > 8) {
             plateNumber = plateNumber.substring(0, 8);
+        }
 
         return plateNumber;
     }
 
+    // Checks whether the license plate number contains digits
+    public boolean containsDigits(String response){
+        Pattern p = Pattern.compile("[0-9]+");
+        Matcher m = p.matcher(response);
+        return m.find();
+    }
+
     // Determines the vehicle's type
     public String determineType(String toDetermine){
+        // Military case
         Pattern p = Pattern.compile("[a-zA-Z]+");
         Matcher m = p.matcher(toDetermine);
-
-        // Military case
         if (m.find()) {
             return "Military";
         }
@@ -160,7 +181,7 @@ public class LicensePlateController {
         http.setRequestProperty("User-Agent", "Mozilla/5.0");
         http.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
         JSONObject postDataParams = new JSONObject();
-        postDataParams.put("apikey", "2b97d902bc88957");
+        postDataParams.put("apikey", "0fd74c6e9e88957");
         postDataParams.put("isOverlayRequired", true);
         postDataParams.put("scale", true);
         postDataParams.put("url", image_url);
@@ -174,7 +195,7 @@ public class LicensePlateController {
         wr.close();
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
         String inputLine;
-        StringBuffer response = new StringBuffer();
+        StringBuilder response = new StringBuilder();
 
         while ((inputLine = in.readLine()) != null) {
             response.append(inputLine);
@@ -207,5 +228,4 @@ public class LicensePlateController {
         }
         return result.toString();
     }
-
 }
