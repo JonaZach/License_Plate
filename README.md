@@ -17,12 +17,12 @@ A system that informs whether vehicles are allowed to enter a parking lot by det
 
 ## Images:
 These are the images I have used in the unit tests:
-*https://i.ibb.co/41Q5wj7/01234589.jpg
-*https://i.ibb.co/zsmpbmL/7722286.jpg
-*https://i.ibb.co/qCPGnQm/00.png
-*https://i.ibb.co/xSX7w0j/12.jpg
-*https://i.ibb.co/SmqQrjF/2952165.jpg
-*https://i.ibb.co/tcr0S7n/2026022.png
-*https://i.ibb.co/gR9jkg6/cali.jpg
-*https://i.ibb.co/Q8RPWBc/9.jpg
+* https://i.ibb.co/41Q5wj7/01234589.jpg
+* https://i.ibb.co/zsmpbmL/7722286.jpg
+* https://i.ibb.co/qCPGnQm/00.png
+* https://i.ibb.co/xSX7w0j/12.jpg
+* https://i.ibb.co/SmqQrjF/2952165.jpg
+* https://i.ibb.co/tcr0S7n/2026022.png
+* https://i.ibb.co/gR9jkg6/cali.jpg
+* https://i.ibb.co/Q8RPWBc/9.jpg
 	
