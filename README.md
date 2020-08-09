@@ -2,11 +2,12 @@
 A system that informs whether vehicles are allowed to enter a parking lot by determining the vehicle's type, using public API OCR
 
 ## Instructions:
-1. Clone/Download the repository to your computer
-2. Navigate to the project root directory (where pom.xml is located) using the terminal
-3. Run `mvn install` - this will build the project and run the unit tests automatically
-4. Run `mvn spring-boot:run`, this will start the service
-5. When you see a meesage like `Started Application in 2.034 seconds`, the service is running and can be accessed at http://localhost:8080/
+1. Make sure JDK and Maven are installed on your computer
+2. Clone/Download the repository to your computer
+3. Navigate to the project root directory (where pom.xml is located) using the terminal
+4. Run `mvn install` - this will build the project and run the unit tests automatically
+5. Run `mvn spring-boot:run` - this will start the service
+6. When you see a message like `Started Application in 2.034 seconds`, the service is running and can be accessed at http://localhost:8080/
 
 ## Endpoints:
 
